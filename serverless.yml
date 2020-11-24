@@ -14,7 +14,6 @@ custom:
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Set the table names here so we can use it while testing locally
-#  tableName: ${self:custom.stage}-profiles
 
 provider:
   name: aws
@@ -25,8 +24,6 @@ provider:
   # These environment variables are made available to our functions
   # under process.env.
   environment:
-#    stripeSecretKey: ${env:STRIPE_SECRET_KEY}
-#    tableName: ${self:custom.tableName}
 
   # 'iamRoleStatements' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
