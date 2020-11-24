@@ -24,6 +24,7 @@ provider:
   # These environment variables are made available to our functions
   # under process.env.
   environment:
+    twitterAppKey: ${ssm:/twitterApiKey~true}
 
   # 'iamRoleStatements' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.

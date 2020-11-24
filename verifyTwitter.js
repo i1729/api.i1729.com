@@ -3,26 +3,24 @@ import axios from 'axios';
 
 export const main = handler(async (event, context) => {
   const userId = event.pathParameters.id;
-  const twitterApiKey = process.env.twitterApiKey;
-  const twitterConsumerKey = process.env.twitterConsumerKey;
-  const twitterSecretKey = process.env.twitterSecretKey;
+  const twitterAppKey = process.env.twitterAppKey;
   let verified = false;
-  
-  axios.defaults.headers.common['Authorization'] = `Bearer ${twitterApiKey}`;
-  
+
+  axios.defaults.headers.common['Authorization'] = `Bearer ${twitterAppKey}`;
+
   axios({ method: 'get', url: 'https://api.twitter.com/1.1/members.json?list_id=1327835085010313219' })
   .then(res2 => { 
     Promise.all(
       res2.data.users.map(user => {
-        if (user.id === id) { 
+        if (userId === id) {
           verified = true;
-        }  
-      });
+        }
+      })
     ).then(() => {
       return verified;
     });
   })
   .catch(err => {
-    return err; 
+    return err;
   });
-}
+});
