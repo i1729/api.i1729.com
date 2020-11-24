@@ -3,10 +3,10 @@ import axios from 'axios';
 
 export const main = handler((event, context) => {
   const userId = event.pathParameters.id;
-  const twitterAppKey = process.env.twitterAppKey;
+  const twitterApiKey = process.env.twitterApiKey;
   let verified = { "verified": false };
 
-  axios.defaults.headers.common['Authorization'] = `Bearer ${twitterAppKey}`;
+  axios.defaults.headers.common['Authorization'] = `Bearer ${twitterApiKey}`;
 
   return axios({ method: 'get', url: 'https://api.twitter.com/1.1/lists/members.json?list_id=1327835085010313219' })
   .then(res => {
