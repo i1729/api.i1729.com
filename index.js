@@ -62,7 +62,7 @@ const app = express();
 app.use(express.static('views'));
 
 // Configure view engine to render EJS templates.
-app.set('views', './views');
+app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
 
