@@ -59,12 +59,21 @@ passport.deserializeUser(function(obj, cb) {
 // Create a new Express application.
 const app = express();
 
-app.use(express.static('views'));
 
 // Configure view engine to render EJS templates.
+/*
+app.use(express.static('views'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
+
+const testFolder = __dirname + '/views/';
+const fs = require('fs');
+
+fs.readdirSync(testFolder).forEach(file => {
+  console.log(file);
+});
+*/
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
@@ -81,7 +90,8 @@ app.use(passport.session());
 // Define routes.
 app.get('/',
   function(req, res) {
-    res.render('home', { user: req.user });
+    //res.render('home', { user: req.user });
+    res.json({ user: req.user });
   });
 
 app.get('/login',
@@ -90,7 +100,7 @@ app.get('/login',
     console.log(process.env);
     console.log('Headers:');
     console.log(req.headers);
-    res.render('login');
+    //res.render('login');
   });
 
 app.get('/login/twitter',
@@ -99,13 +109,14 @@ app.get('/login/twitter',
 app.get('/oauth/callback',
   passport.authenticate('twitter', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('https://google.com');
   });
 
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   function(req, res){
-    res.render('profile', { user: req.user });
+    //res.render('profile', { user: req.user });
+    res.json({ user: req.user });
   });
 
 app.get('/logout',
