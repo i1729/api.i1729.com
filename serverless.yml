@@ -47,65 +47,15 @@ provider:
         - "Fn::GetAtt": [ LeadsTable, Arn ]
 
 functions:
-# Profiles
-  createProfile:
-    # Defines an HTTP API endpoint that calls the main function in create.js
-    # - path: url path is /profiles
-    # - method: POST request
-    # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
-    #     domain api call
-    # - authorizer: authenticate using the AWS IAM role
-    handler: create.main
+  verifyTwitter:
+    handler: verifyTwitter.main
     events:
       - http:
-          path: profiles 
-          method: post
-          cors: true
-          authorizer: aws_iam
-  getProfile:
-    handler: get.main
-    events:
-      - http:
-          path: profiles/{id}
+          path: twitter/{id}
           method: get
           cors: true
-          authorizer: aws_iam
-  listProfiles:
-    handler: list.main
-    events:
-      - http:
-          path: profiles 
-          method: get
-          cors: true
-          authorizer: aws_iam
-  updateProfile:
-    handler: update.main
-    events:
-      - http:
-          path: profiles/{id}
-          method: put
-          cors: true
-          authorizer: aws_iam
-  deleteProfile:
-    handler: delete.main
-    events:
-      - http:
-          path: profiles/{id}
-          method: delete
-          cors: true
-          authorizer: aws_iam
-# Billing
-  billing:
-    # Defines an HTTP API endpoint that calls the main function in billing.js
-    # - path: url path is /billing
-    # - method: POST request
-    handler: billing.main
-    events:
-      - http:
-          path: billing
-          method: post
-          cors: true
-          authorizer: aws_iam
+          private: false 
+
 # Create our resources with seperate CloudFormation templates
 resources:
   # API Gateway Errors
