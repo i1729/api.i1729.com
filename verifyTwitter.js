@@ -12,14 +12,15 @@ export const main = handler(async (event, context) => {
   
   axios({ method: 'get', url: 'https://api.twitter.com/1.1/members.json?list_id=1327835085010313219' })
   .then(res2 => { 
-    let result = await Promise.all(
+    Promise.all(
       res2.data.users.map(user => {
         if (user.id === id) { 
           verified = true;
         }  
       });
-    );
-    return verified;
+    ).then(() => {
+      return verified;
+    });
   })
   .catch(err => {
     return err; 
