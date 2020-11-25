@@ -50,15 +50,28 @@ var app = express();
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({
+
+var session = require('express-session');
+var DynamoDBStore = require('connect-dynamodb')(session);
+
+var options = {
+    AWSConfigJSON: {
+        accessKeyId: process.env.awAccessKey,
+        secretAccessKey: process.env.awwSecretKey,
+        region: 'us-east-2'
+    }
+};
+
+app.use(session(({
+  store: new DynamoDBStore(options),
   secret: 'keyboard cat',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: true ,
-    sameSite: 'Lax'
+    secure: true,
+    maxAge: new Date(Date.now() + 3600000)
   }
-}));
+})));
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
@@ -66,9 +79,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/oauth/callback',
-  passport.authenticate('twitter', { failureRedirect: 'https://google.com' }),
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('https://youtube.com');
+    res.redirect('/');
   });
 
 

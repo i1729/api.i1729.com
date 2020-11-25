@@ -2,7 +2,6 @@ const serverless = require('serverless-http');
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
-var onHeaders = require('on-headers');
 
 // Configure the Twitter strategy for use by Passport.
 //
@@ -51,38 +50,36 @@ var app = express();
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ 
-  secret: 'keyboard cat', 
-  resave: true, 
-  saveUninitialized: true, 
-  cookie: { 
-    secure: true ,
-    sameSite: 'Lax'
+
+var session = require('express-session');
+var DynamoDBStore = require('connect-dynamodb')(session);
+
+var options = {
+    AWSConfigJSON: {
+        accessKeyId: process.env.awAccessKey,
+        secretAccessKey: process.env.awwSecretKey,
+        region: 'us-east-2'
+    }
+};
+
+app.use(session(({
+  store: new DynamoDBStore(options),
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: true,
+    maxAge: new Date(Date.now() + 3600000)
   }
-}));
+})));
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
 
-function responseDebugger() {
-  const redirectUrl = this.getHeader('location');
-
-  console.log(redirectUrl);
-//  this.removeHeader('location');
-
-//  this.setHeader('x-goto', redirectUrl);
-//  this.body = redirectUrl;
-}
-
-var middlewareExample = function(req, res, next){
-  onHeaders(res, responseDebugger);
-  next();
-};
 
 app.get('/oauth',
-  middlewareExample,
   passport.authenticate('twitter'));
 
 export const main = serverless(app);

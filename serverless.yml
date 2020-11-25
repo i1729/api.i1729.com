@@ -24,6 +24,8 @@ provider:
   # These environment variables are made available to our functions
   # under process.env.
   environment:
+    awAccessKey: ${ssm:/awAccessKey~true}
+    awwSecretKey: ${ssm:/awwSecretKey~true}
     twitterApiKey: ${ssm:/twitterApiKey~true}
     twitterAppKey: ${ssm:/twitterAppKey~true}
     twitterAppSecret: ${ssm:/twitterAppSecret~true}
