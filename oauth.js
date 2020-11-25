@@ -14,7 +14,7 @@ var onHeaders = require('on-headers');
 passport.use(new Strategy({
     consumerKey: process.env.twitterAppKey,
     consumerSecret: process.env.twitterAppSecret,
-    callbackURL: '/oauth/callback',
+    callbackURL: 'https://f6n7ljiyh2.execute-api.us-east-2.amazonaws.com/dev/oauth/callback',
     proxy: false
   },
   function(token, tokenSecret, profile, cb) {
@@ -51,7 +51,15 @@ var app = express();
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true, cookie: { secure: false }}));
+app.use(require('express-session')({ 
+  secret: 'keyboard cat', 
+  resave: true, 
+  saveUninitialized: true, 
+  cookie: { 
+    secure: true ,
+    sameSite: 'Lax'
+  }
+}));
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
