@@ -25,6 +25,8 @@ provider:
   # under process.env.
   environment:
     twitterApiKey: ${ssm:/twitterApiKey~true}
+    twitterAppKey: ${ssm:/twitterAppKey~true}
+    twitterAppSecret: ${ssm:/twitterAppSecret~true}
 
 functions:
   verifyTwitter:
@@ -35,6 +37,23 @@ functions:
           method: get
           cors: true
           private: false 
+  oauth:
+    handler: oauth.main
+    events:
+      - http:
+          path: oauth 
+          method: get
+          cors: true
+          private: false 
+  oauthCallback:
+    handler: oauthCallback.main
+    events:
+      - http:
+          path: oauth/callback 
+          method: get
+          cors: true
+          private: false 
+
 
 # Create our resources with seperate CloudFormation templates
 resources:
