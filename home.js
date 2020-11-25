@@ -18,7 +18,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${twitterApiKey}`;
 passport.use(new Strategy({
     consumerKey: process.env.twitterAppKey,
     consumerSecret: process.env.twitterAppSecret,
-    callbackURL: 'https://f6n7ljiyh2.execute-api.us-east-2.amazonaws.com/dev/oauth/callback',
+    callbackURL: 'https://api.i1729.com/oauth/callback',
     proxy: false
   },
   function(token, tokenSecret, profile, cb) {
@@ -96,9 +96,9 @@ app.get('/home',
             user.member1729 = true;
           }
         })
-      )
+      );
     })
-    .then(() => { 
+    .then(() => {
       res.json({ user: user });
     })
     .catch(err => {

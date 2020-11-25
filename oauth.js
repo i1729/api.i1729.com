@@ -13,7 +13,7 @@ var Strategy = require('passport-twitter').Strategy;
 passport.use(new Strategy({
     consumerKey: process.env.twitterAppKey,
     consumerSecret: process.env.twitterAppSecret,
-    callbackURL: 'https://f6n7ljiyh2.execute-api.us-east-2.amazonaws.com/dev/oauth/callback',
+    callbackURL: 'https://api.i1729.com/oauth/callback',
     proxy: false
   },
   function(token, tokenSecret, profile, cb) {
