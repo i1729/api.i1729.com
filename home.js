@@ -3,6 +3,7 @@ var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
 var axios = require('axios');
+var cors = require('cors');
 
 const twitterApiKey = process.env.twitterApiKey;
 
@@ -51,6 +52,7 @@ passport.deserializeUser(function(obj, cb) {
 
 // Create a new Express application.
 var app = express();
+app.use(cors());
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
