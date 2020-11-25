@@ -55,6 +55,14 @@ functions:
           method: get
           cors: true
           private: false 
+  home:
+    handler: home.main
+    events:
+      - http:
+          path: home  
+          method: get
+          cors: true
+          private: false 
 
 
 # Create our resources with seperate CloudFormation templates

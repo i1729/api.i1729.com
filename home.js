@@ -2,6 +2,11 @@ const serverless = require('serverless-http');
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
+var axios = require('axios');
+
+const twitterApiKey = process.env.twitterApiKey;
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${twitterApiKey}`;
 
 // Configure the Twitter strategy for use by Passport.
 //
@@ -78,11 +83,27 @@ app.use(session(({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/oauth/callback',
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
+app.get('/home',
   function(req, res) {
-    res.redirect('/dev/home');
-  });
+    let user = req.user._json;
+    Object.assign(user, {member1729: false});
 
+    axios({ method: 'get', url: 'https://api.twitter.com/1.1/lists/members.json?count=5000&list_id=1327835085010313219' })
+    .then(res => {
+      Promise.all(
+        res.data.users.map(apiUser => {
+          if (apiUser.id === user.id) {
+            user.member1729 = true;
+          }
+        })
+      )
+    })
+    .then(() => { 
+      res.json({ user: user });
+    })
+    .catch(err => {
+      return err;
+    });
+  });
 
 export const main = serverless(app);
