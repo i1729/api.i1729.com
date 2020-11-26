@@ -13,7 +13,6 @@ custom:
   # Our stage is based on what is passed in when running serverless
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
-  # Set the table names here so we can use it while testing locally
 
 provider:
   name: aws
@@ -31,11 +30,11 @@ provider:
     twitterAppSecret: ${ssm:/twitterAppSecret~true}
 
 functions:
-  verifyTwitter:
-    handler: verifyTwitter.main
+  getTwitterUser:
+    handler: getTwitterUser.main
     events:
       - http:
-          path: twitter/{id}
+          path: user/{id}
           method: get
           cors: true
           private: false 

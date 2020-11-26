@@ -88,6 +88,8 @@ app.use(passport.session());
 app.get('/home',
   function(req, res) {
     let user = req.user._json;
+    res.redirect('https://credential.i1729.com/' + user.id_str);
+/*
     Object.assign(user, {member1729: false});
 
     axios({ method: 'get', url: 'https://api.twitter.com/1.1/lists/members.json?count=5000&list_id=1327835085010313219' })
@@ -106,6 +108,7 @@ app.get('/home',
     .catch(err => {
       return err;
     });
+*/
   });
 
 export const main = serverless(app);
