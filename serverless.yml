@@ -30,6 +30,14 @@ provider:
     twitterAppSecret: ${ssm:/twitterAppSecret~true}
 
 functions:
+  getSheets:
+    handler: getSheets.main
+    events:
+      - http:
+          path: sheets/{id}
+          method: get
+          cors: true
+          private: false 
   getTwitterUser:
     handler: getTwitterUser.main
     events:
