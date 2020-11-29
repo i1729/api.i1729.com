@@ -5,11 +5,7 @@ import csv from "csvtojson";
 export const main = handler(async (event, context) => {
   const pageId = event.pathParameters.id;
 
-// Different tabs in sheets have different ids:
-// Movies & TV series = 0
-// Books & Novels = 2098923924
-
-  let sheetsUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRzADxqw-9y4xYVf23zXIzduKxQnqsJgdnwcOK1cY-iHIwx8Z8Syp8P18WYgznFlDvYSpRQXJQcXyqq/pub?gid=${pageId}&single=true&output=csv`;
+  let sheetsUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vR-Oz-t_-hcwJ2qa0rQbiT3-VYqnvJ70RYhHF8oSa3ECYD1ylcSUVIA8HQ07r-PUi5ABjEQZuw_4jYS/pub?gid=${pageId}&single=true&output=csv`;
 
   return csv().fromStream(request.get(sheetsUrl));
 });

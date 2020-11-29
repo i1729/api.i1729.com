@@ -19,7 +19,7 @@ export const main = handler(async (event, context) => {
     followers_count: userData.followers_count
   });
 
-  const memberList = await axios({ method: 'get', url: 'https://api.twitter.com/1.1/lists/members.json?count=5000&list_id=1327835085010313219' });
+  const memberList = await axios({ method: 'get', url: 'https://api.twitter.com/1.1/lists/members.json?count=5000&list_id=1333184036701925388' });
 
   return Promise.all(
     memberList.data.users.map(apiUser => {
