@@ -25,9 +25,11 @@ provider:
   environment:
     awAccessKey: ${ssm:/awAccessKey~true}
     awwSecretKey: ${ssm:/awwSecretKey~true}
-    twitterApiKey: ${ssm:/twitterApiKey~true}
-    twitterAppKey: ${ssm:/twitterAppKey~true}
-    twitterAppSecret: ${ssm:/twitterAppSecret~true}
+    twitterBearerToken: ${ssm:/twitterBearerToken~true}
+    twitterOauthConsumerKey: ${ssm:/twitterOauthConsumerKey~true}
+    twitterOauthConsumerSecret: ${ssm:/twitterOauthConsumerSecret~true}
+    twitterOauthAccessToken: ${ssm:/twitterOauthAccessToken~true}
+    twitterOauthAccessTokenSecret: ${ssm:/twitterOauthAccessTokenSecret~true}
 
 functions:
   getSheets:

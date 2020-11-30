@@ -12,8 +12,8 @@ var cors = require('cors');
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new Strategy({
-    consumerKey: process.env.twitterAppKey,
-    consumerSecret: process.env.twitterAppSecret,
+    consumerKey: process.env.twitterOauthConsumerKey,
+    consumerSecret: process.env.twitterOauthConsumerSecret,
     callbackURL: 'https://api.i1729.com/oauth/callback',
     proxy: false
   },

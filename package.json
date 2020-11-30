@@ -24,9 +24,11 @@
     "express-session": "^1.16.1",
     "fs": "0.0.1-security",
     "morgan": "^1.9.1",
+    "oauth-signature": "^1.5.0",
     "passport": "^0.4.0",
     "passport-twitter": "^1.0.4",
     "request": "^2.88.2",
-    "serverless-http": "^2.6.0"
+    "serverless-http": "^2.6.0",
+    "uuid": "^8.3.1"
   }
 }

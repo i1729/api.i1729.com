@@ -5,9 +5,9 @@ var Strategy = require('passport-twitter').Strategy;
 var axios = require('axios');
 var cors = require('cors');
 
-const twitterApiKey = process.env.twitterApiKey;
+const twitterBearerToken = process.env.twitterBearerToken;
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${twitterApiKey}`;
+axios.defaults.headers.common['Authorization'] = `Bearer ${twitterBearerToken}`;
 
 // Configure the Twitter strategy for use by Passport.
 //
@@ -17,8 +17,8 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${twitterApiKey}`;
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new Strategy({
-    consumerKey: process.env.twitterAppKey,
-    consumerSecret: process.env.twitterAppSecret,
+    consumerKey: process.env.twitterOauthConsumerKey,
+    consumerSecret: process.env.twitterOauthConsumerSecret,
     callbackURL: 'https://api.i1729.com/oauth/callback',
     proxy: false
   },
