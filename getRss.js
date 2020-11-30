@@ -4,8 +4,7 @@ import xml from "xml";
 
 export const main = handler(async (event, context) => {
   const SITE_BASE_URL = "https://api.i1729.com";
-  let posts = await axios.get('https://api.i1729.com/feed');
-  posts = posts.data;
+  let posts = await axios.get(SITE_BASE_URL + '/feed');
 
   const xmlObject = {
     rss: [
@@ -26,13 +25,12 @@ export const main = handler(async (event, context) => {
               }
             }
           },
-          { title: 'Max Schmitt' },
-          { link: 'https://maxschmitt.me' },
-          { description: 'A short description' },
+          { title: '1729' },
+          { link: 'https://1729.com' },
+          { description: 'This is the feed for 1729.' },
           { language: 'en-us' },
 
-          ...posts.map((post) => {
-            if
+          ...posts.data.map((post) => {
             return {
               item: [
                 { title: post.title },

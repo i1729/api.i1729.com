@@ -8,17 +8,12 @@ let parser = new Parser();
 export const main = handler(async (event, context) => {
   const twitterBearerToken = process.env.twitterBearerToken;
 
-  const getTwitterHandles = () => {
-    const sheetsTwitterUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQhIMuXjiaG5ZZM4xMkB3N-xKXr6vuy6CttfcNACuzxQpMQXZwoT961j4GqcW27uV6UB_VNIdtH-fuc/pub?gid=0&single=true&output=csv`;
-    return csv().fromStream(request.get(sheetsTwitterUrl));
+  const getSheetsData = (sheetsUrl) => {
+    return csv().fromStream(request.get(sheetsUrl));
   };
-  const twitterHandles = await getTwitterHandles();
 
-  const getRssFeeds = () => {
-    const sheetsGhostUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQhIMuXjiaG5ZZM4xMkB3N-xKXr6vuy6CttfcNACuzxQpMQXZwoT961j4GqcW27uV6UB_VNIdtH-fuc/pub?gid=1294971885&single=true&output=csv`;
-    return csv().fromStream(request.get(sheetsGhostUrl));
-  };
-  const rssFeeds = await getRssFeeds();
+  const twitterHandles = await getSheetsData("https://docs.google.com/spreadsheets/d/e/2PACX-1vQhIMuXjiaG5ZZM4xMkB3N-xKXr6vu    y6CttfcNACuzxQpMQXZwoT961j4GqcW27uV6UB_VNIdtH-fuc/pub?gid=0&single=true&output=csv");
+  const rssFeeds = await getSheetsData("https://docs.google.com/spreadsheets/d/e/2PACX-1vQhIMuXjiaG5ZZM4xMkB3N-xKXr6vuy6CttfcNACuzxQpMQXZwoT961j4GqcW27uV6UB_VNIdtH-fuc/pub?gid=1294971885&single=true&output=csv");
 
   let feed = [];
 
@@ -32,6 +27,7 @@ export const main = handler(async (event, context) => {
             console.log(tweet);
             return feed.push({
               url: "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str,
+              title: tweet.user.screen_name,
               description: tweet.text,
               creator: tweet.user.screen_name,
               created: new Date(tweet.created_at),
