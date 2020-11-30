@@ -32,6 +32,14 @@ provider:
     twitterOauthAccessTokenSecret: ${ssm:/twitterOauthAccessTokenSecret~true}
 
 functions:
+  getFeed:
+    handler: getFeed.main
+    events:
+      - http:
+          path: feed
+          method: get
+          cors: true
+          private: false 
   getSheets:
     handler: getSheets.main
     events:
