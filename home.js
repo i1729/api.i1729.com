@@ -88,7 +88,7 @@ app.use(passport.session());
 app.get('/home',
   function(req, res) {
     let user = req.user._json;
-    res.redirect('https://credential.i1729.com/' + user.id_str);
+    res.redirect('https://i1729.com/credential/' + user.id_str);
 /*
     Object.assign(user, {member1729: false});
 
