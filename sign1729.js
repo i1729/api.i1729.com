@@ -42,7 +42,7 @@ export const main = handler(async (event, context) => {
   try {
     const gas = await contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).estimateGas({ from: web3.eth.defaultAccount });
     console.log("doing claim");
-    return contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).send({ from: web3.eth.defaultAccount, gasPrice, gas }).then(async (res) => {
+    return contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).send({ from: web3.eth.defaultAccount, gasPrice, gas }).then((res) => {
       console.log(message);
       console.log(res);
       return res;
