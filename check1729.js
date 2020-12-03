@@ -1,6 +1,5 @@
 import handler from "./libs/handler-lib.js";
 import Web3 from "web3";
-import { fromRpcSig } from "ethereumjs-util";
 
 export const main = handler(async (event, context) => {
   const toAddress = event.pathParameters.id;
@@ -23,14 +22,6 @@ export const main = handler(async (event, context) => {
 
   // Create message and hash it
   const message = [web3.eth.defaultAccount, toAddress, timeNow, foreverTime];
-  const messageHash = web3.utils.sha3(message);
-
-  // Sign message hash
-  const signedData = await web3.eth.sign(messageHash, web3.eth.defaultAccount);
-  console.log(signedData);
-
-  // Get r, s, v values from signature
-  const rsv = fromRpcSig(signedData);
 
   // MembershipClaimsRegistry contract address and ABI
   const contractAddress = "0xeE64ad43Ec053b7Ce4bd8F0896ffc26e7e8Bc171";
@@ -38,12 +29,11 @@ export const main = handler(async (event, context) => {
 
   // Initialize and try to call contract
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
-  const gasPrice = await web3.eth.getGasPrice();
   try {
-    const gas = await contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).estimateGas({ from: web3.eth.defaultAccount });
-    console.log("doing claim");
-    return contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).send({ from: web3.eth.defaultAccount, gasPrice, gas }).then(async (res) => {
-      console.log(message);
+    console.log("checking claim");
+    console.log(message);
+    return contract.methods.checkClaim(message).call({ from: web3.eth.defaultAccount })
+    .then((res) => {
       console.log(res);
       return res;
     });

@@ -33,6 +33,14 @@ provider:
     ethereumRopstenPrivateKey: ${ssm:/ethereumRopstenPrivateKey~true}
 
 functions:
+  check1729:
+    handler: check1729.main
+    events:
+      - http:
+          path: check1729/{id}
+          method: get 
+          cors: true
+          private: false 
   sign1729:
     handler: sign1729.main
     events:
