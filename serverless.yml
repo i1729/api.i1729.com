@@ -8,11 +8,15 @@ plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
   - serverless-dotenv-plugin # Load .env as environment variables
+#  - serverless-webpack
 
 custom:
   # Our stage is based on what is passed in when running serverless
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
+  bundle:
+    ignorePackages:
+      - electron
 
 provider:
   name: aws
