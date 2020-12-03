@@ -1,7 +1,10 @@
+import handler from "./libs/handler-lib.js";
 import Web3 from "web3";
 import ethUtil from "ethereumjs-util";
 
-const test = async () => {
+export const main = handler(async (event, context) => {
+  const toAddress = event.pathParameters.id;
+
   // Initialize web3 with Infura Ropsten
   const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/544c350a4cbf425ba5148a140fa9237f"));
 
@@ -15,7 +18,6 @@ const test = async () => {
   console.log(web3.eth.defaultAccount);
 
   // Set data for claim
-  const toAddress = "0xb4e3554C2dF1F9357bFC926853fd8782b0de53F3";
   const timeNow = Date.now().toString();
   const foreverTime = "4132252800"; // 12-12-2100 at 12am
 
@@ -23,7 +25,7 @@ const test = async () => {
   const message = [web3.eth.defaultAccount, toAddress, timeNow, foreverTime];
   const messageHash = web3.utils.sha3(message);
 
-  // Sign message hash 
+  // Sign message hash
   const signedData = await web3.eth.sign(messageHash, web3.eth.defaultAccount);
 
   // Get r, s, v values from signature
@@ -40,12 +42,11 @@ const test = async () => {
     const gas = await contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).estimateGas({ from: web3.eth.defaultAccount });
     contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).send({ from: web3.eth.defaultAccount, gasPrice, gas }).then(async (res) => {
       console.log(res);
-      const gasCheck = await contract.methods.checkClaim(message).estimateGas({ from: web3.eth.defaultAccount });
-      contract.methods.checkClaim(message).call({ from: web3.eth.defaultAccount, gasPrice, gas }).then(console.log); 
+      return res;
     });
   } catch (err) {
     console.log("ERRORED!!!!!!!!!!!!!!!!!!!");
     console.log(err);
+    return err;
   }
-}
-test();
+});

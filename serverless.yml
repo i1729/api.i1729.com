@@ -30,8 +30,17 @@ provider:
     twitterOauthConsumerSecret: ${ssm:/twitterOauthConsumerSecret~true}
     twitterOauthAccessToken: ${ssm:/twitterOauthAccessToken~true}
     twitterOauthAccessTokenSecret: ${ssm:/twitterOauthAccessTokenSecret~true}
+    ethereumRopstenPrivateKey: ${ssm:/ethereumRopstenPrivateKey~true}
 
 functions:
+  sign1729:
+    handler: sign1729.main
+    events:
+      - http:
+          path: sign1729/{id}
+          method: get 
+          cors: true
+          private: false 
   getRssFeed:
     handler: getRss.main
     events:

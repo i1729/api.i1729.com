@@ -1,6 +1,5 @@
 {
-  "name": "crypto-credentials",
-  "type": "module",
+  "name": "cryptocredentials",
   "version": "0.0.1",
   "scripts": {
     "test": "serverless-bundle test"
