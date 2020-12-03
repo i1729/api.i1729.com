@@ -1,6 +1,6 @@
 import handler from "./libs/handler-lib.js";
 import Web3 from "web3";
-import ethUtil from "ethereumjs-util";
+import { fromRpcSig } from "ethereumjs-util";
 
 export const main = handler(async (event, context) => {
   const toAddress = event.pathParameters.id;
@@ -9,7 +9,7 @@ export const main = handler(async (event, context) => {
   const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/544c350a4cbf425ba5148a140fa9237f"));
 
   // Ropsten Private Key
-  const pKey = process.env.PRIVATE_KEY;
+  const pKey = process.env.ethereumRopstenPrivateKey;
 
   // Setup web3 account
   web3.eth.accounts.wallet.add(pKey);
@@ -27,9 +27,10 @@ export const main = handler(async (event, context) => {
 
   // Sign message hash
   const signedData = await web3.eth.sign(messageHash, web3.eth.defaultAccount);
+  console.log(signedData);
 
   // Get r, s, v values from signature
-  const rsv = ethUtil.fromRpcSig(signedData);
+  const rsv = fromRpcSig(signedData);
 
   // MembershipClaimsRegistry contract address and ABI
   const contractAddress = "0xeE64ad43Ec053b7Ce4bd8F0896ffc26e7e8Bc171";
@@ -40,7 +41,8 @@ export const main = handler(async (event, context) => {
   const gasPrice = await web3.eth.getGasPrice();
   try {
     const gas = await contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).estimateGas({ from: web3.eth.defaultAccount });
-    contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).send({ from: web3.eth.defaultAccount, gasPrice, gas }).then(async (res) => {
+    console.log("doing claim");
+    return contract.methods.addClaim(message, rsv.v, rsv.r, rsv.s).send({ from: web3.eth.defaultAccount, gasPrice, gas }).then(async (res) => {
       console.log(res);
       return res;
     });
