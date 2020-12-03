@@ -47,6 +47,7 @@ functions:
           private: false 
   sign1729:
     handler: sign1729.main
+    timeout: 480
     events:
       - http:
           path: sign1729/{id}
